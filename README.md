@@ -6,6 +6,7 @@ This Project is completed under My Software engineering Lab in my 6th Semester o
 Web Technologies Used (PHP, Mysql, Javascript, Jquery, Bootstrap)
 Software Used For Running Apache and Mysql Server : XAMPPv3.2.2
 
+
 Key Features:
 1. Customer Authentication While Registering To the website as a guest user.
 
