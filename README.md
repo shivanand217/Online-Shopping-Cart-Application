@@ -18,6 +18,8 @@ Key Features:
    Sessions are a simple way to store data for individual users against a unique session ID. 
    This can be used to persist state information between page requests. 
    Session IDs are normally sent to the browser via session cookies and the ID is used to retrieve existing session data.
+   
+5. Captcha feature for human robot authentication.
 
 Missing Feature:
   PAYMENT GATEWAY FOR CART CHECKOUT(I'll add this feature later:) .)
