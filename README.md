@@ -6,23 +6,18 @@ This Project is completed under My Software engineering Lab in my 6th Semester o
 Web Technologies Used (PHP, Mysql, Javascript, Jquery, Bootstrap)
 Software Used For Running Apache and Mysql Server : XAMPPv3.2.2
 
-
 Key Features:
 1. Customer Authentication While Registering To the website as a guest user.
-
 2. All types of Validations.
-
 3. Mysqli real_escape_string used to escape special charaters in the string to use in sql statement.
-
 4. Use of PHP Session Management.
    Sessions are a simple way to store data for individual users against a unique session ID. 
    This can be used to persist state information between page requests. 
    Session IDs are normally sent to the browser via session cookies and the ID is used to retrieve existing session data.
-   
-5. Captcha feature for human robot authentication.
+5. Captcha feature for human robot identification.
+6. Payment gateway via Paypal.
 
-Missing Feature:
-  PAYMENT GATEWAY FOR CART CHECKOUT(I'll add this feature later:) .)
+Re: Update(25-12-2017) : Paypal Payment gateway added for product checkout feature.
   
 To run the project:
 1. Install Xampp from its official site(https://www.apachefriends.org/download.html)(latest release not must).
