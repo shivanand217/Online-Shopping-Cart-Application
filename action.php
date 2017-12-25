@@ -231,7 +231,7 @@ if(isset($_POST["get_cart_product"]) || isset($_POST["cart_checkout"])){
 
 				<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
 				  <input type="hidden" name="cmd" value="_cart">
-				  <input type="hidden" name="business" value="shoppingcart@khanstore.com">
+				  <input type="hidden" name="business" value="shoppingcart@Shivstore.com">
 				  <input type="hidden" name="upload" value="1">';
 
 				  $x=0;
