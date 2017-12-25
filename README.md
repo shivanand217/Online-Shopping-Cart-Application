@@ -25,6 +25,6 @@ To run the project:
 3. In case if it is showing blocked ports or missing dependencies free your required port by searching it in cmd with netstat -a -n or
    Check it in Your task manager's Process tab. (Sometimes Skype also using port 80 So close skype when you are running Apache).
 4. Save this Project Under your installed directory of XAMPP, in my case it is D:\xampp\htdocs\dashboard\shopping cart. (only works when you save in htdocs)
-5. After successfully running apache and mysql server you have to add all the products with the given jpg names in your phpmyadmin database.
+5. After successfully running apache and mysql server you have to create the database for the project via phpMyadmin by adding all the products with the given jpg names in your phpmyadmin  database.
 6. Then you can run the shopping Cart at localhost/dashboard/Shopping Cart/index.php ;).
    
