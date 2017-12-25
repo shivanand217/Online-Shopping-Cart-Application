@@ -4,8 +4,10 @@ session_start();
 
 include "db.php";
 
-if(isset($_POST["category"])){
+if(isset($_POST["category"])) {
+
 	$category_query = "SELECT * FROM categories";
+
 	$run_query = mysqli_query($con,$category_query) or die(mysqli_error($con));
 	echo "
 		<div class='nav nav-pills nav-stacked'>
@@ -22,8 +24,11 @@ if(isset($_POST["category"])){
 		echo "</div>";
 	}
 }
-if(isset($_POST["brand"])){
+
+if(isset($_POST["brand"])) {
+
 	$brand_query = "SELECT * FROM brands";
+
 	$run_query = mysqli_query($con,$brand_query);
 	echo "
 		<div class='nav nav-pills nav-stacked'>
@@ -40,28 +45,41 @@ if(isset($_POST["brand"])){
 		echo "</div>";
 	}
 }
-if(isset($_POST["page"])){
+
+if(isset($_POST["page"])) {
+	
 	$sql = "SELECT * FROM products";
-	$run_query = mysqli_query($con,$sql);
+	$run_query = mysqli_query($con, $sql);
 	$count = mysqli_num_rows($run_query);
-	$pageno = ceil($count/9);
-	for($i=1;$i<=$pageno;$i++){
+
+	// maximum pages required taking 9 products in one page
+
+	$pageno = ceil($count / 9);
+	
+	for($i=1 ; $i <= $pageno ; $i++) {
 		echo "
 			<li><a href='#' page='$i' id='page'>$i</a></li>
 		";
 	}
+
 }
-if(isset($_POST["getProduct"])){
+
+if(isset($_POST["getProduct"])) {
+
 	$limit = 9;
+	
 	if(isset($_POST["setPage"])){
 		$pageno = $_POST["pageNumber"];
 		$start = ($pageno * $limit) - $limit;
 	}else{
 		$start = 0;
 	}
+
 	$product_query = "SELECT * FROM products LIMIT $start,$limit";
 	$run_query = mysqli_query($con,$product_query);
-	if(mysqli_num_rows($run_query) > 0){
+	
+	if(mysqli_num_rows($run_query) > 0) {
+
 		while($row = mysqli_fetch_array($run_query)){
 			$pro_id    = $row['product_id'];
 			$pro_cat   = $row['product_cat'];
@@ -74,17 +92,18 @@ if(isset($_POST["getProduct"])){
 							<div class='panel panel-info'>
 								<div class='panel-heading'>$pro_title</div>
 								<div class='panel-body'>
-									<img src='product_images/$pro_image' style='width:160px; height:250px;'/>
+									<img src='product_images/$pro_image' style='width:160px; height:150px;'/>
 								</div>
 								<div class='panel-heading'>$.$pro_price.00
 									<button pid='$pro_id' style='float:right;' id='product' class='btn btn-danger btn-xs'>AddToCart</button>
 								</div>
 							</div>
-						</div>
+						</div>	
 			";
 		}
 	}
 }
+
 if(isset($_POST["get_seleted_Category"]) || isset($_POST["selectBrand"]) || isset($_POST["search"])){
 	if(isset($_POST["get_seleted_Category"])){
 		$id = $_POST["cat_id"];
@@ -96,46 +115,52 @@ if(isset($_POST["get_seleted_Category"]) || isset($_POST["selectBrand"]) || isse
 		$keyword = $_POST["keyword"];
 		$sql = "SELECT * FROM products WHERE product_keywords LIKE '%$keyword%'";
 	}
-
+	
 	$run_query = mysqli_query($con,$sql);
-	while($row=mysqli_fetch_array($run_query)){
+
+	while($row=mysqli_fetch_array($run_query)) {
+
 			$pro_id    = $row['product_id'];
 			$pro_cat   = $row['product_cat'];
 			$pro_brand = $row['product_brand'];
 			$pro_title = $row['product_title'];
 			$pro_price = $row['product_price'];
 			$pro_image = $row['product_image'];
+		
 			echo "
 				<div class='col-md-4'>
 							<div class='panel panel-info'>
 								<div class='panel-heading'>$pro_title</div>
 								<div class='panel-body'>
-									<img src='product_images/$pro_image' style='width:160px; height:250px;'/>
+									<img src='product_images/$pro_image' style='width:160px; height:150px;'/>
 								</div>
 								<div class='panel-heading'>$.$pro_price.00
 									<button pid='$pro_id' style='float:right;' id='product' class='btn btn-danger btn-xs'>AddToCart</button>
 								</div>
 							</div>
-						</div>
+						</div>	
 			";
 		}
 	}
+									
 
-	if(isset($_POST["addToProduct"])){
-
-		if(isset($_SESSION["uid"])){
-			$p_id = $_POST["proId"];
+	if(isset($_POST["addToProduct"])) {
+		
+		if(isset($_SESSION["uid"])) {
+		
+		$p_id = $_POST["proId"];
 		$user_id = $_SESSION["uid"];
 		$sql = "SELECT * FROM cart WHERE p_id = '$p_id' AND user_id = '$user_id'";
 		$run_query = mysqli_query($con,$sql);
 		$count = mysqli_num_rows($run_query);
-		if($count > 0){
+		
+		if($count > 0) {
 			echo "
 				<div class='alert alert-warning'>
 						<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
 						<b>Product is already added into the cart Continue Shopping..!</b>
 				</div>
-			";//not in video
+			";
 		} else {
 			$sql = "SELECT * FROM products WHERE product_id = '$p_id'";
 			$run_query = mysqli_query($con,$sql);
@@ -144,42 +169,42 @@ if(isset($_POST["get_seleted_Category"]) || isset($_POST["selectBrand"]) || isse
 				$pro_name = $row["product_title"];
 				$pro_image = $row["product_image"];
 				$pro_price = $row["product_price"];
-			$sql = "INSERT INTO `cart`
+			$sql = "INSERT INTO `cart` 
 			(`id`, `p_id`, `ip_add`, `user_id`, `product_title`,
 			`product_image`, `qty`, `price`, `total_amt`)
-			VALUES (NULL, '$p_id', '0', '$user_id', '$pro_name',
+			VALUES (NULL, '$p_id', '0', '$user_id', '$pro_name', 
 			'$pro_image', '1', '$pro_price', '$pro_price')";
 			if(mysqli_query($con,$sql)){
 				echo "
 					<div class='alert alert-success'>
 						<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
-						<b>Product is Added..!</b>
+						<b>Product Successfully Added to the cart .. !</b>
 					</div>
 				";
 			}
 		}
-		}else{
+		} else {
 			echo "
 					<div class='alert alert-success'>
 						<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
-						<b>Sorry..!go and Sign Up First then you can add a product to your cart</b>
+						<b>Sorry..! Please Sign In First to add a product to your cart</b>
 					</div>
 				";
-		}
-
-
-
-
+		}	
 	}
+
 if(isset($_POST["get_cart_product"]) || isset($_POST["cart_checkout"])){
 	$uid = $_SESSION["uid"];
 	$sql = "SELECT * FROM cart WHERE user_id = '$uid'";
 	$run_query = mysqli_query($con,$sql);
 	$count = mysqli_num_rows($run_query);
+	
 	if($count > 0){
 		$no = 1;
 		$total_amt = 0;
-		while($row=mysqli_fetch_array($run_query)){
+
+		while($row=mysqli_fetch_array($run_query)) {
+
 			$id = $row["id"];
 			$pro_id = $row["p_id"];
 			$pro_name = $row["product_title"];
@@ -191,6 +216,7 @@ if(isset($_POST["get_cart_product"]) || isset($_POST["cart_checkout"])){
 			$total_sum = array_sum($price_array);
 			$total_amt = $total_amt + $total_sum;
 			setcookie("ta",$total_amt,strtotime("+1 day"),"/","","",TRUE);
+			
 			if(isset($_POST["get_cart_product"])){
 				echo "
 				<div class='row'>
@@ -200,8 +226,9 @@ if(isset($_POST["get_cart_product"]) || isset($_POST["cart_checkout"])){
 					<div class='col-md-3 col-xs-3'>$.$pro_price.00</div>
 				</div>
 			";
+
 			$no = $no + 1;
-			}else{
+			} else {
 				echo "
 					<div class='row'>
 							<div class='col-md-2 col-sm-2'>
@@ -217,36 +244,38 @@ if(isset($_POST["get_cart_product"]) || isset($_POST["cart_checkout"])){
 							<div class='col-md-2 col-sm-2'><input type='text' class='form-control total' pid='$pro_id' id='total-$pro_id' value='$total' disabled></div>
 						</div>
 				";
-			}
-
+			}	
 		}
-		if(isset($_POST["cart_checkout"])){
+
+		if(isset($_POST["cart_checkout"])) {
+
 			echo "<div class='row'>
 				<div class='col-md-8'></div>
 				<div class='col-md-4'>
-					<h1>Total $$total_amt</h1>
+					<h1>Total amount is $$total_amount</h1>
 				</div>";
 		}
-		echo '
 
+		echo '
 				<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
 				  <input type="hidden" name="cmd" value="_cart">
-				  <input type="hidden" name="business" value="shoppingcart@Shivstore.com">
+				  <input type="hidden" name="business" value="shoppingcart@shiv.com">
 				  <input type="hidden" name="upload" value="1">';
-
+				  
 				  $x=0;
 				  $uid = $_SESSION["uid"];
+
 				  $sql = "SELECT * FROM cart WHERE user_id = '$uid'";
 				  $run_query = mysqli_query($con,$sql);
-				  while($row=mysqli_fetch_array($run_query)){
+				  
+				  while($row = mysqli_fetch_array($run_query)) {
 					  $x++;
 				 echo  '<input type="hidden" name="item_name_'.$x.'" value="'.$row["product_title"].'">
 				  <input type="hidden" name="item_number_'.$x.'" value="'.$x.'">
 				  <input type="hidden" name="amount_'.$x.'" value="'.$row["price"].'">
 				  <input type="hidden" name="quantity_'.$x.'" value="'.$row["qty"].'">';
-
-				  }
-
+				}
+				  
 				echo   '
 				<input type="hidden" name="return" value="http://www.sysc.esy.es/shoppingCart/payment_success.php"/>
 				<input type="hidden" name="cancel_return" value="http://www.sysc.esy.es/shoppingCart/cancel.php"/>
@@ -254,31 +283,30 @@ if(isset($_POST["get_cart_product"]) || isset($_POST["cart_checkout"])){
 				<input type="hidden" name="custom" value="'.$uid.'"/>
 				<input style="float:right;margin-right:80px;" type="image" name="submit"
 					src="https://www.paypalobjects.com/webstatic/en_US/i/btn/png/blue-rect-paypalcheckout-60px.png" alt="PayPal Checkout"
-					alt="PayPal - The safer, easier way to pay online">
+					alt=" PayPal - The safer, easier way to pay online " >
 				</form>';
-
-
-
-
 	}
 }
 
-if(isset($_POST["cart_count"]) AND isset($_SESSION["uid"])){
+if(isset($_POST["cart_count"]) AND isset($_SESSION["uid"])) {
 	$uid = $_SESSION["uid"];
 	$sql = "SELECT * FROM cart WHERE user_id = '$uid'";
 	$run_query = mysqli_query($con,$sql);
 	echo mysqli_num_rows($run_query);
 }
-if(isset($_POST["removeFromCart"])){
+
+if(isset($_POST["removeFromCart"])) {
+	
 	$pid = $_POST["removeId"];
 	$uid = $_SESSION["uid"];
 	$sql = "DELETE FROM cart WHERE user_id = '$uid' AND p_id = '$pid'";
 	$run_query = mysqli_query($con,$sql);
+
 	if($run_query){
 		echo "
 			<div class='alert alert-danger'>
 				<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
-				<b>Product is Removed from Cart Continue Shopping..!</b>
+				<b>Product is Removed from Cart Continue Shopping.. !</b>
 			</div>
 		";
 	}
@@ -290,17 +318,47 @@ if(isset($_POST["updateProduct"])){
 	$qty = $_POST["qty"];
 	$price = $_POST["price"];
 	$total = $_POST["total"];
-
-	$sql = "UPDATE cart SET qty = '$qty',price='$price',total_amt='$total'
+	
+	$sql = "UPDATE cart SET qty = '$qty',price='$price',total_amt='$total' 
 	WHERE user_id = '$uid' AND p_id='$pid'";
 	$run_query = mysqli_query($con,$sql);
 	if($run_query){
 		echo "
 			<div class='alert alert-success'>
 				<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
-				<b>Product is Updated Continue Shopping..!</b>
+				<b>Product is Updated Continue Shopping.. !</b>
 			</div>
 		";
 	}
 }
 ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
